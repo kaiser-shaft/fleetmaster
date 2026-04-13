@@ -1,6 +1,9 @@
 include .env
 export
 
+run:
+	@go run ./cmd/app/main.go
+
 env-up:
 	@docker compose up -d db redis;
 

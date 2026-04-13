@@ -1,4 +1,4 @@
-module github.com/kaiser-shaft/freemaster
+module github.com/kaiser-shaft/fleetmaster
 
 go 1.25.0
 

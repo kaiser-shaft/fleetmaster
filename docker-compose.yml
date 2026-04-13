@@ -1,7 +1,7 @@
 services:
     app:
         build: .
-        container_name: freemaster_app
+        container_name: fleetmaster_app
         env_file: .env
         restart: unless-stopped
         ports:
@@ -14,7 +14,7 @@ services:
 
     db:
         image: postgres:17-alpine
-        container_name: freemaster_db
+        container_name: fleetmaster_db
         restart: unless-stopped
         environment:
             POSTGRES_USER: ${DB_USER}
@@ -31,7 +31,7 @@ services:
 
     redis:
         image: redis:7-alpine
-        container_name: freemaster_redis
+        container_name: fleetmaster_redis
         restart: unless-stopped
         healthcheck:
             test: ["CMD", "redis-cli", "ping"]
@@ -43,7 +43,7 @@ services:
 
     migrate:
         image: migrate/migrate:v4.19.1
-        container_name: freemaster_migrate
+        container_name: fleetmaster_migrate
         volumes:
             - ./migrations:/migrations
         env_file: .env

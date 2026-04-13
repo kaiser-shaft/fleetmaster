@@ -3,13 +3,13 @@ package main
 import (
 	"log/slog"
 
-	"github.com/google/uuid"
+	"github.com/kaiser-shaft/fleetmaster/internal/app"
 )
 
 func main() {
 	slog.Info("Application started")
 
-	slog.Info("Random data:", slog.String("UUID", uuid.New().String()))
+	app.Run()
 
 	slog.Warn("Application stopped")
 }

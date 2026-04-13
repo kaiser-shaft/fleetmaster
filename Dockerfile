@@ -16,7 +16,7 @@ COPY . .
 # Сборка:
 # -s -w убирают отладочную информацию (минус пару мегабайт)
 # CGO_ENABLED=0 делает бинарник статическим (не требует библиотек в Alpine)
-RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o /freemaster ./cmd/app/main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o /fleetmaster ./cmd/app/main.go
 
 # Stage 2: Final
 FROM alpine:3.23
@@ -28,7 +28,7 @@ RUN apk add --no-cache ca-certificates tzdata \
 WORKDIR /app
 
 # Копируем ТОЛЬКО бинарный файл из образа builder
-COPY --from=builder --chown=appuser:appuser /freemaster .
+COPY --from=builder --chown=appuser:appuser /fleetmaster .
 
 # Переключаемся на обычного пользователя
 USER appuser
@@ -36,4 +36,4 @@ USER appuser
 EXPOSE ${APP_PORT}
 
 # Запускаем через ./ для надежности
-CMD ["./freemaster"]
+CMD ["./fleetmaster"]
