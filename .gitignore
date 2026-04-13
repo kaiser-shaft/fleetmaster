@@ -1,0 +1,12 @@
+out
+*.out
+coverage.*
+
+bin
+vendor/
+
+.env
+!.env.example
+
+.idea
+.vscode

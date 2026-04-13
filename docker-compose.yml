@@ -1,0 +1,56 @@
+services:
+    app:
+        build: .
+        container_name: freemaster_app
+        env_file: .env
+        restart: unless-stopped
+        ports:
+            - "${APP_PORT}:${APP_PORT}"
+        depends_on:
+            db:
+                condition: service_healthy
+            redis:
+                condition: service_healthy
+
+    db:
+        image: postgres:17-alpine
+        container_name: freemaster_db
+        restart: unless-stopped
+        environment:
+            POSTGRES_USER: ${DB_USER}
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
+            POSTGRES_DB: ${DB_NAME}
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+            interval: 5s
+            timeout: 5s
+            retries: 5
+            start_period: 5s
+        ports:
+            - "${DB_PORT:-5432}:5432"
+
+    redis:
+        image: redis:7-alpine
+        container_name: freemaster_redis
+        restart: unless-stopped
+        healthcheck:
+            test: ["CMD", "redis-cli", "ping"]
+            interval: 5s
+            timeout: 3s
+            retries: 5
+        ports:
+            - "${REDIS_PORT:-6379}:6379"
+
+    migrate:
+        image: migrate/migrate:v4.19.1
+        container_name: freemaster_migrate
+        volumes:
+            - ./migrations:/migrations
+        env_file: .env
+        command:
+            - -path=/migrations/
+            - -database=${DB_DSN}
+            - up
+        depends_on:
+            db:
+                condition: service_healthy
