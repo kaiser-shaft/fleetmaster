@@ -1,15 +1,12 @@
 package main
 
 import (
-	"log/slog"
-
+	"github.com/kaiser-shaft/fleetmaster/config"
 	"github.com/kaiser-shaft/fleetmaster/internal/app"
 )
 
 func main() {
-	slog.Info("Application started")
+	cfg := config.MustLoad()
 
-	app.Run()
-
-	slog.Warn("Application stopped")
+	app.Run(cfg)
 }
