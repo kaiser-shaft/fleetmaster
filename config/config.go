@@ -12,9 +12,9 @@ import (
 )
 
 type Config struct {
-	HTTP  httpserver.Config
-	DB    postgres.Config
-	Redis redis.Config
+	HTTP     httpserver.Config
+	Postgres postgres.Config
+	Redis    redis.Config
 }
 
 func New() (*Config, error) {
